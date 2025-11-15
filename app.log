@@ -1,0 +1,136 @@
+2025-10-11 14:04:59,790 - [-] - score_nodatabase - ERROR - Exception on / [GET]
+Traceback (most recent call last):
+  File "C:\Users\shoaib\Desktop\AIProjects\ContractAudit\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\shoaib\Desktop\AIProjects\ContractAudit\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\shoaib\Desktop\AIProjects\ContractAudit\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\shoaib\Desktop\AIProjects\ContractAudit\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\shoaib\Desktop\AIProjects\ContractAudit\score_nodatabase.py", line 409, in index
+    return render_template('index.html')
+  File "C:\Users\shoaib\Desktop\AIProjects\ContractAudit\venv\Lib\site-packages\flask\templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "C:\Users\shoaib\Desktop\AIProjects\ContractAudit\venv\Lib\site-packages\jinja2\environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shoaib\Desktop\AIProjects\ContractAudit\venv\Lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\shoaib\Desktop\AIProjects\ContractAudit\venv\Lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "C:\Users\shoaib\Desktop\AIProjects\ContractAudit\venv\Lib\site-packages\jinja2\loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+                                 ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shoaib\Desktop\AIProjects\ContractAudit\venv\Lib\site-packages\flask\templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shoaib\Desktop\AIProjects\ContractAudit\venv\Lib\site-packages\flask\templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: index.html
+2025-10-11 14:04:59,976 - [-] - score_nodatabase - ERROR - Internal server error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+2025-10-11 14:15:54,372 - [-] - score_nodatabase - INFO - Created new FAISS index for collection: rfp_parsed
+2025-10-11 14:15:55,564 - [-] - score_nodatabase - ERROR - Error creating FAISS index for collection response_parsed: list index out of range
+2025-10-11 14:15:55,610 - [-] - score_nodatabase - ERROR - Error parsing temp_response.pdf: Failed to create FAISS index: list index out of range
+2025-10-11 14:15:55,614 - [-] - score_nodatabase - ERROR - Error processing documents: Failed to parse PDF: Failed to create FAISS index: list index out of range
+2025-10-11 14:32:04,270 - [27aa7dd8-cefe-4ebe-ad92-03973c6668ee] - score_nodatabase - INFO - Received request to /process
+2025-10-11 14:32:04,403 - [27aa7dd8-cefe-4ebe-ad92-03973c6668ee] - score_nodatabase - INFO - Files saved temporarily: uploads\temp_rfp_20f5a2bc-902f-4f26-abb3-59a7d2b2b87d.pdf, uploads\temp_response_c784b24b-00d5-49eb-8b88-17938de5c6ed.pdf
+2025-10-11 14:32:04,423 - [-] - score_nodatabase - INFO - Cleared FAISS index for collection: rfp_parsed
+2025-10-11 14:32:18,179 - [-] - score_nodatabase - INFO - Created new FAISS index for collection: rfp_parsed
+2025-10-11 14:32:18,186 - [-] - score_nodatabase - INFO - Cleared FAISS index for collection: response_parsed
+2025-10-11 14:32:36,313 - [-] - score_nodatabase - INFO - Created new FAISS index for collection: response_parsed
+2025-10-11 14:32:36,315 - [27aa7dd8-cefe-4ebe-ad92-03973c6668ee] - score_nodatabase - INFO - Documents parsed successfully
+2025-10-11 14:32:36,319 - [27aa7dd8-cefe-4ebe-ad92-03973c6668ee] - score_nodatabase - INFO - Cleaned up temporary file: uploads\temp_rfp_20f5a2bc-902f-4f26-abb3-59a7d2b2b87d.pdf
+2025-10-11 14:32:36,322 - [27aa7dd8-cefe-4ebe-ad92-03973c6668ee] - score_nodatabase - INFO - Cleaned up temporary file: uploads\temp_response_c784b24b-00d5-49eb-8b88-17938de5c6ed.pdf
+2025-10-11 14:32:38,655 - [6a1653de-ebf9-4f6e-a3a5-742d1e08fcc0] - score_nodatabase - INFO - Received request to /generate_report
+2025-10-11 14:32:43,693 - [6a1653de-ebf9-4f6e-a3a5-742d1e08fcc0] - score_nodatabase - INFO - Documents retrieved for analysis
+2025-10-11 14:32:59,671 - [6a1653de-ebf9-4f6e-a3a5-742d1e08fcc0] - score_nodatabase - INFO - Gap analysis and insights generated
+2025-10-11 14:32:59,679 - [6a1653de-ebf9-4f6e-a3a5-742d1e08fcc0] - score_nodatabase - INFO - Proposal Accepted: Difference 8.00% within 20% threshold.
+2025-10-11 14:33:08,574 - [6a1653de-ebf9-4f6e-a3a5-742d1e08fcc0] - score_nodatabase - INFO - Report formatted to HTML
+2025-10-11 14:33:08,582 - [6a1653de-ebf9-4f6e-a3a5-742d1e08fcc0] - score_nodatabase - INFO - Report saved for download: downloadable_reports\report_as_8a10b00a-d283-49e8-816c-cf03c0f2b745.html
+2025-10-11 14:42:11,085 - [6815614b-a059-4312-a34a-dcdbfc771925] - score_nodatabase - INFO - Received request to /process
+2025-10-11 14:42:11,092 - [6815614b-a059-4312-a34a-dcdbfc771925] - score_nodatabase - INFO - Files saved temporarily: uploads\temp_rfp_f0c4968f-a89a-429d-8811-4a51a5a6bb6c.pdf, uploads\temp_response_f026d672-2302-4c66-a138-82668ec3a3d7.pdf
+2025-10-11 14:42:11,097 - [-] - score_nodatabase - INFO - Cleared FAISS index for collection: rfp_parsed
+2025-10-11 14:42:21,048 - [-] - score_nodatabase - INFO - Created new FAISS index for collection: rfp_parsed
+2025-10-11 14:42:21,056 - [-] - score_nodatabase - INFO - Cleared FAISS index for collection: response_parsed
+2025-10-11 14:42:29,943 - [-] - score_nodatabase - INFO - Created new FAISS index for collection: response_parsed
+2025-10-11 14:42:29,948 - [6815614b-a059-4312-a34a-dcdbfc771925] - score_nodatabase - INFO - Documents parsed successfully
+2025-10-11 14:42:29,952 - [6815614b-a059-4312-a34a-dcdbfc771925] - score_nodatabase - INFO - Cleaned up temporary file: uploads\temp_rfp_f0c4968f-a89a-429d-8811-4a51a5a6bb6c.pdf
+2025-10-11 14:42:29,959 - [6815614b-a059-4312-a34a-dcdbfc771925] - score_nodatabase - INFO - Cleaned up temporary file: uploads\temp_response_f026d672-2302-4c66-a138-82668ec3a3d7.pdf
+2025-10-11 14:42:33,508 - [03f121dc-38b1-4c44-8804-923eabb1ec9a] - score_nodatabase - INFO - Received request to /generate_report
+2025-10-11 14:42:38,235 - [03f121dc-38b1-4c44-8804-923eabb1ec9a] - score_nodatabase - INFO - Documents retrieved for analysis
+2025-10-11 14:42:56,360 - [03f121dc-38b1-4c44-8804-923eabb1ec9a] - score_nodatabase - INFO - Gap analysis and insights generated
+2025-10-11 14:42:56,371 - [03f121dc-38b1-4c44-8804-923eabb1ec9a] - score_nodatabase - INFO - Proposal Accepted: Difference 8.00% within 20% threshold.
+2025-10-11 14:43:08,920 - [03f121dc-38b1-4c44-8804-923eabb1ec9a] - score_nodatabase - INFO - Report formatted to HTML
+2025-10-11 14:43:08,923 - [03f121dc-38b1-4c44-8804-923eabb1ec9a] - score_nodatabase - INFO - Report saved for download: downloadable_reports\report_jj_a4cfb9e6-8a60-4807-893a-231df825218e.html
+2025-10-11 14:47:24,358 - [0b8cb89d-1286-45ea-8e53-8f982806e90c] - score_nodatabase - INFO - Received request to /process
+2025-10-11 14:47:24,367 - [0b8cb89d-1286-45ea-8e53-8f982806e90c] - score_nodatabase - INFO - Files saved temporarily: uploads\temp_rfp_93f49e9e-612a-4655-b234-bfa28d82d1af.pdf, uploads\temp_response_c986ca6f-2b84-455d-aa2e-0f7181002bb9.pdf
+2025-10-11 14:47:24,371 - [-] - score_nodatabase - INFO - Cleared FAISS index for collection: rfp_parsed
+2025-10-11 14:47:35,518 - [-] - score_nodatabase - INFO - Created new FAISS index for collection: rfp_parsed
+2025-10-11 14:47:35,524 - [-] - score_nodatabase - INFO - Cleared FAISS index for collection: response_parsed
+2025-10-11 14:47:43,645 - [-] - score_nodatabase - INFO - Created new FAISS index for collection: response_parsed
+2025-10-11 14:47:43,646 - [0b8cb89d-1286-45ea-8e53-8f982806e90c] - score_nodatabase - INFO - Documents parsed successfully
+2025-10-11 14:47:43,648 - [0b8cb89d-1286-45ea-8e53-8f982806e90c] - score_nodatabase - INFO - Cleaned up temporary file: uploads\temp_rfp_93f49e9e-612a-4655-b234-bfa28d82d1af.pdf
+2025-10-11 14:47:43,649 - [0b8cb89d-1286-45ea-8e53-8f982806e90c] - score_nodatabase - INFO - Cleaned up temporary file: uploads\temp_response_c986ca6f-2b84-455d-aa2e-0f7181002bb9.pdf
+2025-10-11 14:47:55,424 - [b0b69724-34c4-4185-a8d8-bf1c469e8834] - score_nodatabase - INFO - Received request to /generate_report
+2025-10-11 14:47:59,967 - [b0b69724-34c4-4185-a8d8-bf1c469e8834] - score_nodatabase - INFO - Documents retrieved for analysis
+2025-10-11 14:48:20,430 - [b0b69724-34c4-4185-a8d8-bf1c469e8834] - score_nodatabase - INFO - Gap analysis and insights generated
+2025-10-11 14:48:20,434 - [b0b69724-34c4-4185-a8d8-bf1c469e8834] - score_nodatabase - INFO - Proposal Accepted: Difference 8.00% within 20% threshold.
+2025-10-11 14:48:28,354 - [b0b69724-34c4-4185-a8d8-bf1c469e8834] - score_nodatabase - INFO - Report formatted to HTML
+2025-10-11 14:48:28,359 - [b0b69724-34c4-4185-a8d8-bf1c469e8834] - score_nodatabase - INFO - Report saved for download: downloadable_reports\report_KSA2023-BAS_b661b3a9-b6ab-40e2-93bd-12270b406923.html
+2025-11-15 15:18:46,222 - [daf312e4-087f-4277-8df2-ba98c2e5bed6] - score_nodatabase - INFO - Received request to /process
+2025-11-15 15:18:46,284 - [daf312e4-087f-4277-8df2-ba98c2e5bed6] - score_nodatabase - INFO - Files saved temporarily: uploads\temp_rfp_cd3e46e6-6b50-4a2d-9078-2c10ceaec1c8.pdf, uploads\temp_response_5a0cd675-427d-46d8-bdd0-434475fe8e60.pdf
+2025-11-15 15:18:46,298 - [-] - score_nodatabase - INFO - Cleared FAISS index for collection: rfp_parsed
+2025-11-15 15:18:53,617 - [-] - score_nodatabase - ERROR - Error parsing uploads\temp_rfp_cd3e46e6-6b50-4a2d-9078-2c10ceaec1c8.pdf: The parsed file 'uploads\temp_rfp_cd3e46e6-6b50-4a2d-9078-2c10ceaec1c8.pdf' contains no readable text.
+2025-11-15 15:18:53,622 - [daf312e4-087f-4277-8df2-ba98c2e5bed6] - score_nodatabase - ERROR - Error processing documents: Failed to parse file: The parsed file 'uploads\temp_rfp_cd3e46e6-6b50-4a2d-9078-2c10ceaec1c8.pdf' contains no readable text.
+2025-11-15 15:18:53,628 - [daf312e4-087f-4277-8df2-ba98c2e5bed6] - score_nodatabase - INFO - Cleaned up temporary file: uploads\temp_rfp_cd3e46e6-6b50-4a2d-9078-2c10ceaec1c8.pdf
+2025-11-15 15:18:53,631 - [daf312e4-087f-4277-8df2-ba98c2e5bed6] - score_nodatabase - INFO - Cleaned up temporary file: uploads\temp_response_5a0cd675-427d-46d8-bdd0-434475fe8e60.pdf
+2025-11-15 15:22:05,546 - [2fa29d5b-2089-48b8-830e-cec9974b6006] - score_nodatabase - INFO - Received request to /process
+2025-11-15 15:22:05,558 - [2fa29d5b-2089-48b8-830e-cec9974b6006] - score_nodatabase - INFO - Files saved temporarily: uploads\temp_rfp_5cc4fbcf-1b9a-45b5-b013-9a9b64c0900e.pdf, uploads\temp_response_1af95a8a-0385-4fe0-bdd7-5e6c19e0ea96.pdf
+2025-11-15 15:22:05,565 - [-] - score_nodatabase - INFO - Cleared FAISS index for collection: rfp_parsed
+2025-11-15 15:22:13,580 - [-] - score_nodatabase - ERROR - Error parsing uploads\temp_rfp_5cc4fbcf-1b9a-45b5-b013-9a9b64c0900e.pdf: The parsed file 'uploads\temp_rfp_5cc4fbcf-1b9a-45b5-b013-9a9b64c0900e.pdf' contains no readable text.
+2025-11-15 15:22:13,586 - [2fa29d5b-2089-48b8-830e-cec9974b6006] - score_nodatabase - ERROR - Error processing documents: Failed to parse file: The parsed file 'uploads\temp_rfp_5cc4fbcf-1b9a-45b5-b013-9a9b64c0900e.pdf' contains no readable text.
+2025-11-15 15:22:13,592 - [2fa29d5b-2089-48b8-830e-cec9974b6006] - score_nodatabase - INFO - Cleaned up temporary file: uploads\temp_rfp_5cc4fbcf-1b9a-45b5-b013-9a9b64c0900e.pdf
+2025-11-15 15:22:13,595 - [2fa29d5b-2089-48b8-830e-cec9974b6006] - score_nodatabase - INFO - Cleaned up temporary file: uploads\temp_response_1af95a8a-0385-4fe0-bdd7-5e6c19e0ea96.pdf
+2025-11-15 15:24:22,627 - [77f54b18-7d00-4923-ae3c-18b8c8de7062] - score_nodatabase - INFO - Received request to /process
+2025-11-15 15:24:22,634 - [77f54b18-7d00-4923-ae3c-18b8c8de7062] - score_nodatabase - INFO - Files saved temporarily: uploads\temp_rfp_05f21bfb-fe1c-481f-8a6f-55697c7f7e83.pdf, uploads\temp_response_2c364e83-35c2-4ce6-a4c1-82a0176a51e9.pdf
+2025-11-15 15:24:22,641 - [-] - score_nodatabase - INFO - Cleared FAISS index for collection: rfp_parsed
+2025-11-15 15:24:30,884 - [-] - score_nodatabase - WARNING - Vendor parser returned no readable text. Retrying with default LlamaParse pipeline.
+2025-11-15 15:24:57,570 - [-] - score_nodatabase - INFO - Created new FAISS index for collection: rfp_parsed
+2025-11-15 15:24:57,579 - [-] - score_nodatabase - INFO - Cleared FAISS index for collection: response_parsed
+2025-11-15 15:25:09,345 - [-] - score_nodatabase - WARNING - Vendor parser returned no readable text. Retrying with default LlamaParse pipeline.
+2025-11-15 15:25:33,002 - [-] - score_nodatabase - INFO - Created new FAISS index for collection: response_parsed
+2025-11-15 15:25:33,005 - [77f54b18-7d00-4923-ae3c-18b8c8de7062] - score_nodatabase - INFO - Documents parsed successfully
+2025-11-15 15:25:33,008 - [77f54b18-7d00-4923-ae3c-18b8c8de7062] - score_nodatabase - INFO - Cleaned up temporary file: uploads\temp_rfp_05f21bfb-fe1c-481f-8a6f-55697c7f7e83.pdf
+2025-11-15 15:25:33,011 - [77f54b18-7d00-4923-ae3c-18b8c8de7062] - score_nodatabase - INFO - Cleaned up temporary file: uploads\temp_response_2c364e83-35c2-4ce6-a4c1-82a0176a51e9.pdf
+2025-11-15 15:25:40,339 - [a8ac445b-135b-4b41-9d57-9c62c9176a56] - score_nodatabase - INFO - Received request to /generate_report
+2025-11-15 15:25:45,657 - [a8ac445b-135b-4b41-9d57-9c62c9176a56] - score_nodatabase - INFO - Documents retrieved for analysis
+2025-11-15 15:26:02,512 - [a8ac445b-135b-4b41-9d57-9c62c9176a56] - score_nodatabase - INFO - Gap analysis and insights generated
+2025-11-15 15:26:02,516 - [a8ac445b-135b-4b41-9d57-9c62c9176a56] - score_nodatabase - INFO - Proposal Rejected: Difference 34.00% exceeds 20% threshold.
+2025-11-15 15:26:15,387 - [a8ac445b-135b-4b41-9d57-9c62c9176a56] - score_nodatabase - INFO - Report formatted to HTML
+2025-11-15 15:26:15,399 - [a8ac445b-135b-4b41-9d57-9c62c9176a56] - score_nodatabase - INFO - Report saved for download: downloadable_reports\report_jjj_592fed29-614a-4d22-9286-10c474040dd0.html
+2025-11-15 15:27:18,437 - [85d4a9c4-9de8-4de7-86ee-8fe531f66e06] - score_nodatabase - INFO - Received request to /chat
+2025-11-15 15:27:29,093 - [85d4a9c4-9de8-4de7-86ee-8fe531f66e06] - score_nodatabase - INFO - Chat response generated successfully
+2025-11-15 15:37:47,075 - [2f53ecd4-d2fe-442f-b813-c900f97eda89] - score_nodatabase - INFO - Received request to /process
+2025-11-15 15:37:47,117 - [2f53ecd4-d2fe-442f-b813-c900f97eda89] - score_nodatabase - INFO - Files saved temporarily: uploads\temp_rfp_e924da95-3a5b-4c64-809e-2b1afb785575.pdf, uploads\temp_response_e838cf18-b345-4690-9adb-959277efe291.pdf
+2025-11-15 15:37:47,152 - [-] - score_nodatabase - INFO - Cleared FAISS index for collection: rfp_parsed
+2025-11-15 15:37:54,932 - [-] - score_nodatabase - WARNING - Vendor parser returned no readable text. Retrying with default LlamaParse pipeline.
+2025-11-15 15:38:04,782 - [-] - score_nodatabase - INFO - Created new FAISS index for collection: rfp_parsed
+2025-11-15 15:38:04,793 - [-] - score_nodatabase - INFO - Cleared FAISS index for collection: response_parsed
+2025-11-15 15:38:10,730 - [-] - score_nodatabase - WARNING - Vendor parser returned no readable text. Retrying with default LlamaParse pipeline.
+2025-11-15 15:38:19,288 - [-] - score_nodatabase - INFO - Created new FAISS index for collection: response_parsed
+2025-11-15 15:38:19,289 - [2f53ecd4-d2fe-442f-b813-c900f97eda89] - score_nodatabase - INFO - Documents parsed successfully
+2025-11-15 15:38:19,291 - [2f53ecd4-d2fe-442f-b813-c900f97eda89] - score_nodatabase - INFO - Cleaned up temporary file: uploads\temp_rfp_e924da95-3a5b-4c64-809e-2b1afb785575.pdf
+2025-11-15 15:38:19,292 - [2f53ecd4-d2fe-442f-b813-c900f97eda89] - score_nodatabase - INFO - Cleaned up temporary file: uploads\temp_response_e838cf18-b345-4690-9adb-959277efe291.pdf
+2025-11-15 15:38:29,322 - [cc2229a9-3fe2-4816-97f0-7fe907c793de] - score_nodatabase - INFO - Received request to /generate_report
+2025-11-15 15:38:33,463 - [cc2229a9-3fe2-4816-97f0-7fe907c793de] - score_nodatabase - INFO - Documents retrieved for analysis
+2025-11-15 15:38:50,242 - [cc2229a9-3fe2-4816-97f0-7fe907c793de] - score_nodatabase - INFO - Gap analysis and insights generated
+2025-11-15 15:38:50,248 - [cc2229a9-3fe2-4816-97f0-7fe907c793de] - score_nodatabase - INFO - Proposal Accepted: Difference 20.00% within 20% threshold.
+2025-11-15 15:39:02,274 - [cc2229a9-3fe2-4816-97f0-7fe907c793de] - score_nodatabase - INFO - Report formatted to HTML
+2025-11-15 15:39:02,280 - [cc2229a9-3fe2-4816-97f0-7fe907c793de] - score_nodatabase - INFO - Report saved for download: downloadable_reports\report_AGI5123XVB_3eab1627-b64f-411a-a944-a743f4925430.html
+2025-11-15 15:40:44,464 - [2f23fb4f-f1bc-4015-bc6a-b2d985004a03] - score_nodatabase - INFO - Received request to /chat
+2025-11-15 15:40:52,892 - [2f23fb4f-f1bc-4015-bc6a-b2d985004a03] - score_nodatabase - INFO - Chat response generated successfully
+2025-11-15 15:41:24,936 - [a4e2b375-ac7d-4dac-9989-ce32dfef11bd] - score_nodatabase - INFO - Received request to /enhanced_proposal
+2025-11-15 15:41:40,971 - [a4e2b375-ac7d-4dac-9989-ce32dfef11bd] - score_nodatabase - INFO - Enhanced proposal saved: downloadable_reports\enhanced_proposal_AGI5123XVB_6c7fc905-89ad-4ce3-bf61-d6fff91ce99b.html

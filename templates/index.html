@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract Audit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        /* General Alpine.js x-cloak style */
+        [x-cloak] { display: none !important; }
+        
+        /* Tailwind transition class (already defined, keeping for context) */
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+
+        /* Styles for the temporary pop-up */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .popup.show {
+            opacity: 1;
+        }
+        .popup.accepted {
+            background-color: #10B981; /* Green-600 */
+        }
+        .popup.rejected {
+            background-color: #EF4444; /* Red-500 */
+        }
+    </style>
+</head>
+<body class="h-full" x-data="{ activeTab: 'report', isMobileMenuOpen: false }">
+    <div class="flex flex-col h-full lg:flex-row">
+        <div class="w-full lg:w-1/3 bg-white p-6 overflow-y-auto border-b lg:border-r border-gray-200">
+            <div class="mb-6">
+                <h1 class="text-3xl font-bold text-indigo-800">Dcoument Intelligence System</h1>
+                <p class="text-sm text-gray-600">Contract Audit</p>
+            </div>
+
+            <div id="dashboardPanel" class="mb-6 grid grid-cols-1 gap-4" aria-live="polite">
+                <div class="rounded-lg border border-indigo-100 bg-indigo-50 p-4 shadow-sm">
+                    <h2 class="text-xs font-semibold uppercase tracking-wide text-indigo-600">Bid Document Number</h2>
+                    <p id="dashboardBidNumber" class="mt-2 text-2xl font-bold text-indigo-900">--</p>
+                </div>
+                <div class="rounded-lg border border-blue-100 bg-blue-50 p-4 shadow-sm">
+                    <h2 class="text-xs font-semibold uppercase tracking-wide text-blue-600">Proposal Gap Score</h2>
+                    <p id="dashboardGapScore" class="mt-2 text-2xl font-bold text-blue-900">--</p>
+                    <p class="mt-1 text-xs text-blue-600">Difference: <span id="dashboardDifference">--%</span></p>
+                </div>
+                <div id="dashboardStatusCard" class="rounded-lg border border-slate-200 bg-slate-50 p-4 shadow-sm">
+                    <h2 class="text-xs font-semibold uppercase tracking-wide text-slate-600">Proposal Status</h2>
+                    <p id="dashboardStatus" class="mt-2 text-2xl font-bold text-slate-900">--</p>
+                    <span id="dashboardStatusBadge" class="mt-2 inline-flex items-center rounded-full bg-slate-200 px-2.5 py-0.5 text-xs font-semibold text-slate-700">Awaiting Analysis</span>
+                </div>
+            </div>
+            
+            <form id="uploadForm" enctype="multipart/form-data" class="space-y-4 mb-6">
+                <div>
+                    <label for="bidDocumentNumber" class="block text-sm font-medium text-gray-700">Bid Document Number</label>
+                    <input class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" type="text" id="bidDocumentNumber" name="bidDocumentNumber" placeholder="Enter Bid Document Number" required aria-required="true">
+                </div>
+                <div>
+                    <label for="rfpFile" class="block text-sm font-medium text-gray-700">RFP File</label>
+                    <input type="file" id="rfpFile" name="rfp" accept=".pdf,.doc,.docx,.png,.jpeg,.jpg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*" required>
+                </div>
+                <div>
+                    <label for="responseFile" class="block text-sm font-medium text-gray-700">Response File</label>
+                    <input type="file" id="responseFile" name="response" accept=".pdf,.doc,.docx,.png,.jpeg,.jpg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*" required>
+                </div>
+            </form>
+            
+            <button onclick="processDocuments()" id="processBtn" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 hover:bg-indigo-500 transition-all flex items-center justify-center" aria-label="Process Documents">
+                <span>Process Documents</span>
+                <svg id="processingSpinner" class="animate-spin ml-2 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </button>
+            
+            <div id="processingStatus" class="mt-4 p-4 rounded-lg bg-blue-50 text-blue-700 hidden transition-all" role="status" aria-live="polite"></div>
+            
+            <button onclick="generateReport()" id="generateReportBtn" class="w-full mt-4 bg-green-600 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 hover:bg-green-500 transition-all hidden" aria-label="Generate Report">Generate Report</button>
+
+            <button onclick="downloadReport()" id="downloadReportBtn" class="w-full mt-4 bg-blue-600 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hover:bg-blue-500 transition-all hidden" aria-label="Download Report">
+                Download Report
+                <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full lg:w-2/3 bg-gray-50 p-6 flex flex-col">
+            <div class="mb-4">
+                <div class="border-b border-gray-200">
+                    <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                        <a href="#" class="border-indigo-500 text-indigo-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" 
+                            :class="{ 'border-indigo-500 text-indigo-600': activeTab === 'report', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'report' }"
+                            @click.prevent="activeTab = 'report'"
+                            aria-controls="report-tab"
+                            :aria-selected="activeTab === 'report'">
+                            Report
+                        </a>
+                        <a href="#"
+                            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+                            :class="{ 'border-indigo-500 text-indigo-600': activeTab === 'chat', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'chat' }"
+                            @click.prevent="activeTab = 'chat'"
+                            aria-controls="chat-tab"
+                            :aria-selected="activeTab === 'chat'">
+                            Chat
+                        </a>
+                        <a href="#"
+                            class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+                            :class="{ 'border-indigo-500 text-indigo-600': activeTab === 'proposal', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'proposal' }"
+                            @click.prevent="activeTab = 'proposal'"
+                            aria-controls="proposal-tab"
+                            :aria-selected="activeTab === 'proposal'">
+                            Enhanced Proposal
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="flex-grow overflow-y-auto">
+                <div x-show="activeTab === 'report'" x-cloak id="report-tab" role="tabpanel" aria-labelledby="report-tab">
+                    <div id="report" class="bg-white shadow-sm rounded-lg p-6">
+                        <p class="text-gray-500">Upload documents and process them to generate a report.</p>
+                    </div>
+                </div>
+                <div x-show="activeTab === 'chat'" x-cloak id="chat-tab" role="tabpanel" aria-labelledby="chat-tab">
+                    <div class="bg-white shadow-sm rounded-lg p-6 flex flex-col h-[32rem]">
+                        <div class="flex-1 overflow-y-auto pr-2" id="chatMessages" aria-live="polite">
+                            <div class="text-gray-500 text-sm">
+                                Ask questions about the generated report or uploaded files once they are processed.
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label for="chatInput" class="block text-sm font-medium text-gray-700">Ask a question</label>
+                            <textarea id="chatInput" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="e.g. What are the main compliance risks?"></textarea>
+                        </div>
+                        <div class="mt-4 flex items-center space-x-3">
+                            <button id="sendChatBtn" class="bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-indigo-500 transition-all" onclick="sendChatMessage()" disabled>Send</button>
+                            <p id="chatStatus" class="text-xs text-gray-500">Process documents and generate a report to enable chat.</p>
+                        </div>
+                    </div>
+                </div>
+                <div x-show="activeTab === 'proposal'" x-cloak id="proposal-tab" role="tabpanel" aria-labelledby="proposal-tab">
+                    <div class="bg-white shadow-sm rounded-lg p-6 flex flex-col h-[32rem]">
+                        <div id="enhancedProposalStatus" class="text-sm text-gray-600">
+                            Generate a report to see if an enhanced proposal is recommended.
+                        </div>
+                        <div class="mt-4 flex space-x-3">
+                            <button id="writeProposalBtn" class="bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-orange-500 transition-all hidden" onclick="writeEnhancedProposal()">Write New Proposal</button>
+                            <button id="downloadProposalBtn" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-500 transition-all hidden" onclick="downloadEnhancedProposal()">Download Proposal</button>
+                        </div>
+                        <div class="mt-6 flex-1 overflow-y-auto border border-dashed border-gray-200 rounded-lg p-4" id="enhancedProposalDisplay">
+                            <p class="text-gray-500 text-sm">Once available, the AI-generated enhanced proposal will appear here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="statusPopup" class="popup" style="display: none;"></div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
